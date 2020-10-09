@@ -9,7 +9,8 @@ import (
 	"strings"
 )
 
-func Db(connectionString string) (db *mongo.Database, err error) {
+// 解析Mongodb数据库连接字符串，返回数据库连接
+func DB(connectionString string) (db *mongo.Database, err error) {
 	if connectionString == "" {
 		err = errors.New("Mongodb 连接字符串不能为空")
 		return

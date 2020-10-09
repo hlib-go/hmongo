@@ -13,7 +13,8 @@ var (
 )
 
 func TestConnect(t *testing.T) {
-	c := Connect(HM_MONGO_CONNECTION_STRING)
+	t.Log(HM_MONGO_CONNECTION_STRING)
+	c, _ := DB(HM_MONGO_CONNECTION_STRING)
 	t.Log(c)
 }
 
@@ -45,7 +46,7 @@ func TestBsonEncode(t *testing.T) {
 
 	var a = qa
 
-	c := Connect(HM_MONGO_CONNECTION_STRING)
+	c, _ := DB(HM_MONGO_CONNECTION_STRING)
 
 	cursor, err := c.Collection("hm_rights_order").Aggregate(nil, a)
 	if err != nil {
@@ -92,7 +93,7 @@ func TestJsonQuery(t *testing.T) {
 		return
 	}
 
-	c := Connect(HM_MONGO_CONNECTION_STRING)
+	c, _ := DB(HM_MONGO_CONNECTION_STRING)
 
 	cursor, err := c.Collection("hm_rights_order").Aggregate(nil, a)
 	if err != nil {
