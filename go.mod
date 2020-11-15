@@ -1,4 +1,4 @@
-module hmongo
+module github.com/hlib-go/hmongo
 
 go 1.14
 
