@@ -12,7 +12,7 @@ func Collection(db *mongo.Database, name string) *mongo.Collection {
 	return db.Collection(name)
 }
 
-// 因事务不支持不存在的集合，建议在服务启动时执行检查
+// 因事务不支持不存在的集合，可在服务启动时执行检查
 func CreatedEmptyCollection(c *mongo.Collection) (err error) {
 	count, err := c.CountDocuments(nil, bson.M{}, options.Count().SetLimit(1))
 	if err != nil {
