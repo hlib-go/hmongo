@@ -7,6 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"os"
 	"time"
 )
 
@@ -19,8 +20,20 @@ type HConfig struct {
 	collection *mongo.Collection
 }
 
+func envName(name string) string {
+	if os.Getenv("HCONFIG_ENV") == "local" {
+		// 本地开发环境配置KEY读取
+		name = name + "-local"
+	} else if os.Getenv("HCONFIG_ENV") == "other" {
+		// 预留其它环境配置KEY读取，用于特殊场景测试
+		name = name + "-other"
+	}
+	return name
+}
+
 // Get 获取配置
 func (o *HConfig) Get(name string, v interface{}) (err error) {
+	name = envName(name)
 	var result map[string]interface{}
 	err = o.collection.FindOne(nil, bson.M{"name": name}).Decode(&result)
 	if err != nil && err == mongo.ErrNoDocuments {
@@ -65,6 +78,8 @@ func (o *HConfig) Watch(cbFunc func(name string, value []byte)) {
 			if err != nil {
 				return
 			}
+
+			//name = envName(name)
 			cbFunc(result["name"].(string), value)
 		}
 		log.Info("HConfig Watch end.")
