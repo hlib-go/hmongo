@@ -7,10 +7,6 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func Collection(db *mongo.Database, name string) *mongo.Collection {
-	return db.Collection(name)
-}
-
 // 列表查询
 func Find(ctx context.Context, c *mongo.Collection, filter interface{}, result interface{}, opts ...*options.FindOptions) (err error) {
 	cursor, err := c.Find(ctx, filter, opts...)

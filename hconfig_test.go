@@ -3,6 +3,7 @@ package hmongo
 import (
 	"encoding/json"
 	"testing"
+	"time"
 )
 
 func TestHConfig_Get(t *testing.T) {
@@ -22,4 +23,12 @@ func TestHConfig_Get(t *testing.T) {
 		return
 	}
 	t.Log(string(wxb))
+}
+
+func TestHConfig_Watch(t *testing.T) {
+	cfg := NewHConfig(DefaultDB.Collection("hm_config"))
+	cfg.Watch(func(name string, value []byte) {
+		t.Log(name, " ", string(value))
+	})
+	time.Sleep(1 * time.Hour)
 }
