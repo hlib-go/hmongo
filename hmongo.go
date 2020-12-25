@@ -77,7 +77,7 @@ func (o *HMongo) Database() (db *mongo.Database) {
 	return
 }
 
-func (o *HMongo) Client() (client *mongo.Client, err error) {
+func (o *HMongo) Client() (client *mongo.Client) {
 	db := o.Database()
 	client = db.Client()
 	return
