@@ -78,9 +78,7 @@ func (o *HMongo) Database() (db *mongo.Database) {
 }
 
 func (o *HMongo) Client() (client *mongo.Client) {
-	db := o.Database()
-	client = db.Client()
-	return
+	return o.Database().Client()
 }
 
 func (o *HMongo) Collection(name string, opts ...*options.CollectionOptions) *mongo.Collection {
