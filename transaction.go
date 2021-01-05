@@ -7,8 +7,11 @@ import (
 )
 
 // Mongodb 数据库事务操作
-func Transaction(txname string, client *mongo.Client, resove func(sessionContext mongo.SessionContext) error) error {
-	tlog := log.WithField("txname", txname)
+func Transaction(requestId string, client *mongo.Client, resove func(sessionContext mongo.SessionContext) error) error {
+	if requestId == "" {
+		requestId = Rand32()
+	}
+	tlog := log.WithField("requestId", requestId)
 	return client.UseSession(context.Background(), func(sessionContext mongo.SessionContext) (err error) {
 		defer func() {
 			if err != nil {
