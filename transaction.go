@@ -2,8 +2,10 @@ package hmongo
 
 import (
 	"context"
+	"errors"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/mongo"
+	"strings"
 )
 
 // Mongodb 数据库事务操作
@@ -12,7 +14,7 @@ func Transaction(requestId string, client *mongo.Client, resove func(sessionCont
 		requestId = Rand32()
 	}
 	tlog := log.WithField("requestId", requestId)
-	return client.UseSession(context.Background(), func(sessionContext mongo.SessionContext) (err error) {
+	e := client.UseSession(context.Background(), func(sessionContext mongo.SessionContext) (err error) {
 		defer func() {
 			if err != nil {
 				e := sessionContext.AbortTransaction(sessionContext)
@@ -36,4 +38,13 @@ func Transaction(requestId string, client *mongo.Client, resove func(sessionCont
 		err = resove(sessionContext)
 		return
 	})
+	if e != nil {
+		if strings.HasPrefix(e.Error(), "(LockTimeout)") {
+			e = errors.New("系统繁忙请稍后重试.[LockTimeout]")
+		}
+		if strings.HasPrefix(e.Error(), "(WriteConflict)") {
+			e = errors.New("系统繁忙请稍后重试.[WriteConflict]")
+		}
+	}
+	return e
 }
