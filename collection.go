@@ -28,9 +28,6 @@ func FindPage(ctx context.Context, c *mongo.Collection, filter interface{}, sort
 	if sort == nil {
 		sort = bson.M{}
 	}
-	if sort["_id"] == nil {
-		sort["_id"] = -1 // 默认根据_id倒序
-	}
 	if pageNum == 0 {
 		pageNum = 1
 	}
