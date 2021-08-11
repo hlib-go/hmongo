@@ -24,9 +24,9 @@ func Find(ctx context.Context, c *mongo.Collection, filter interface{}, result i
 }
 
 // 分页查询
-func FindPage(ctx context.Context, c *mongo.Collection, filter interface{}, sort bson.M, pageSize, pageNum int64, result interface{}, fo ...*options.FindOptions) (total int64, err error) {
+func FindPage(ctx context.Context, c *mongo.Collection, filter interface{}, sort bson.D, pageSize, pageNum int64, result interface{}, fo ...*options.FindOptions) (total int64, err error) {
 	if sort == nil {
-		sort = bson.M{}
+		sort = bson.D{bson.E{"_id", -1}} // 没有排序字段时，根据_id 倒序
 	}
 	if pageNum == 0 {
 		pageNum = 1

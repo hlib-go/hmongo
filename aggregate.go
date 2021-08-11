@@ -25,16 +25,13 @@ func Aggregate(ctx context.Context, c *mongo.Collection, pipeline interface{}, r
 }
 
 //AggregateSearch 集合多字段关键字搜索
-func AggregateSearch(ctx context.Context, c *mongo.Collection, filter bson.M, concat bson.A, keywords string, sort bson.M, pageNum, pageSize int64, result interface{}, opts ...*options.AggregateOptions) (total int64, err error) {
+func AggregateSearch(ctx context.Context, c *mongo.Collection, filter bson.M, concat bson.A, keywords string, sort bson.D, pageNum, pageSize int64, result interface{}, opts ...*options.AggregateOptions) (total int64, err error) {
 	if filter == nil {
 		filter = bson.M{}
 	}
 	// 排序必须有一个字段
 	if sort == nil {
-		sort = bson.M{}
-	}
-	if sort["_id"] == nil {
-		sort["_id"] = -1
+		sort = bson.D{bson.E{"_id", -1}}
 	}
 	if pageNum == 0 {
 		pageNum = 1
