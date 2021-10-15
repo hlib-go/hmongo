@@ -7,6 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -67,7 +68,7 @@ func (o *HMongo) Database() (db *mongo.Database) {
 		err = errors.New(fmt.Sprintf("Errror HMongo connStr %s", connStr))
 		return
 	}
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(connStr))
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(connStr).SetReadPreference(readpref.SecondaryPreferred()))
 	if err != nil {
 		err = errors.New(fmt.Sprintf("Errror HMongo Connect %s", err))
 		return

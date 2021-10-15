@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"strings"
 )
 
@@ -20,7 +21,7 @@ func DB(connectionString string) (db *mongo.Database, err error) {
 		err = errors.New(fmt.Sprintf("Errror Mongodb connectionString %s", connectionString))
 		return
 	}
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(connectionString))
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(connectionString).SetReadPreference(readpref.SecondaryPreferred()))
 	if err != nil {
 		err = errors.New(fmt.Sprintf("Errror Connect mongodb exception %s", err))
 		return
