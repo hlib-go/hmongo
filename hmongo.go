@@ -7,7 +7,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -23,8 +22,9 @@ var (
 
 // Mongodb 连接
 type HMongo struct {
-	database *mongo.Database
-	cmp      map[string]bool
+	database      *mongo.Database
+	cmp           map[string]bool
+	ClientOptions *options.ClientOptions
 }
 
 // ConneStr 从系统环境读取Mongodb数据库连接字符串
@@ -68,7 +68,11 @@ func (o *HMongo) Database() (db *mongo.Database) {
 		err = errors.New(fmt.Sprintf("Errror HMongo connStr %s", connStr))
 		return
 	}
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(connStr).SetReadPreference(readpref.SecondaryPreferred()))
+	if o.ClientOptions == nil {
+		//options.Client().ApplyURI(connStr).SetReadPreference(readpref.SecondaryPreferred())
+		o.ClientOptions = options.Client().ApplyURI(connStr)
+	}
+	client, err := mongo.Connect(context.Background(), o.ClientOptions)
 	if err != nil {
 		err = errors.New(fmt.Sprintf("Errror HMongo Connect %s", err))
 		return
