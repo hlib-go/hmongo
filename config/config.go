@@ -84,7 +84,7 @@ func (c *Config) find() {
 	if err != nil {
 		panic(err)
 	}
-	var configs []*Item
+	var configs []*Object
 	err = cur.All(nil, &configs)
 	if err != nil {
 		panic(err)
@@ -114,7 +114,7 @@ func (c *Config) watch() {
 	}
 }
 
-type Item struct {
+type Object struct {
 	Key    string                 `bson:"key" json:"key"`       // 配置Key
 	Value  map[string]interface{} `bson:"value" json:"value"`   // 配置对象
 	Remark string                 `bson:"remark" json:"remark"` // 备注说明
