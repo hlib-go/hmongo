@@ -1,4 +1,4 @@
-package hmongo
+package gridfs
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -9,9 +9,8 @@ import (
 
 // 文档：https://godoc.org/go.mongodb.org/mongo-driver/mongo/gridfs
 
-// GridFS 上传文件
-// 	Deprecated
-func FSUpload(db *mongo.Database, filename string, fileBytes []byte) (fileId string, err error) {
+// Upload 上传文件
+func Upload(db *mongo.Database, filename string, fileBytes []byte) (fileId string, err error) {
 	bucket, err := gridfs.NewBucket(db)
 	if err != nil {
 		return
@@ -33,9 +32,8 @@ func FSUpload(db *mongo.Database, filename string, fileBytes []byte) (fileId str
 	return
 }
 
-// GridFS 下载文件
-// 	Deprecated
-func FSDownload(db *mongo.Database, fileId string) (bytes []byte, err error) {
+// Download 下载文件
+func Download(db *mongo.Database, fileId string) (bytes []byte, err error) {
 	bucket, err := gridfs.NewBucket(db)
 	if err != nil {
 		return
@@ -63,9 +61,8 @@ func FSDownload(db *mongo.Database, fileId string) (bytes []byte, err error) {
 	return
 }
 
-// GridFS 删除文件
-// 	Deprecated
-func FSDelete(db *mongo.Database, fileId string) (err error) {
+// Delete 删除文件
+func Delete(db *mongo.Database, fileId string) (err error) {
 	bucket, err := gridfs.NewBucket(db)
 	if err != nil {
 		return

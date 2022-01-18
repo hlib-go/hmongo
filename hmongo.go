@@ -17,10 +17,12 @@ import (
 
 var (
 	// 默认通过系统环境配置读取数据库连接
+	// 	Deprecated
 	DefaultDB = new(HMongo)
 )
 
 // Mongodb 连接
+// 	Deprecated
 type HMongo struct {
 	database      *mongo.Database
 	cmp           map[string]bool
@@ -28,6 +30,7 @@ type HMongo struct {
 }
 
 // ConneStr 从系统环境读取Mongodb数据库连接字符串
+// 	Deprecated
 func (o *HMongo) ConnStr() string {
 	//**********从环境变量读取
 	connStr := os.Getenv("HMONGO")
@@ -44,6 +47,7 @@ func (o *HMongo) ConnStr() string {
 	return string(bs)
 }
 
+// 	Deprecated
 func (o *HMongo) Database() (db *mongo.Database) {
 	db = o.database
 	if db != nil {
@@ -82,10 +86,12 @@ func (o *HMongo) Database() (db *mongo.Database) {
 	return
 }
 
+// 	Deprecated
 func (o *HMongo) Client() (client *mongo.Client) {
 	return o.Database().Client()
 }
 
+// 	Deprecated
 func (o *HMongo) Collection(name string, opts ...*options.CollectionOptions) *mongo.Collection {
 	c := o.Database().Collection(name, opts...)
 	if !o.cmp[name] {
@@ -98,6 +104,7 @@ func (o *HMongo) Collection(name string, opts ...*options.CollectionOptions) *mo
 }
 
 // CreatedEmptyCollection 因事务不支持不存在的集合，可在服务启动时执行检查
+// 	Deprecated
 func (o *HMongo) CreatedEmptyCollection(c *mongo.Collection) (err error) {
 	count, err := c.CountDocuments(nil, bson.M{}, options.Count().SetLimit(1))
 	if err != nil {

@@ -10,7 +10,9 @@ import (
 	"strings"
 )
 
-// 解析Mongodb数据库连接字符串，返回数据库连接
+// 	Deprecated
+// 	改为使用db.NewDatabase(dsn)
+// 	解析Mongodb数据库连接字符串，返回数据库连接
 func DB(connectionString string) (db *mongo.Database, err error) {
 	if connectionString == "" {
 		err = errors.New("Mongodb 连接字符串不能为空")

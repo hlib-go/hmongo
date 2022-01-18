@@ -11,11 +11,13 @@ import (
 	"time"
 )
 
+// 	Deprecated
 func NewHConfig(collection *mongo.Collection) *HConfig {
 	return &HConfig{collection: collection}
 }
 
 // HConfig 使用Mongodb集合做项目配置
+// 	Deprecated
 type HConfig struct {
 	collection *mongo.Collection
 }
